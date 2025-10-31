@@ -497,7 +497,7 @@ a:hover {
 }
 
 body * {
-    animation: gentleAppear 0.8s ease-out both;
+    animation: gentleAppear 0.8s ease-out backwards;
 }
 
 .container { animation-delay: 0.1s; }
@@ -515,4 +515,5 @@ body * {
         opacity: 1;
         transform: translateY(0);
     }
+
 }
