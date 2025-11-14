@@ -22,14 +22,14 @@
 ---
 
 ## 🌐 Открыть сайт  
-🎯 **[verseLthefox.github.io](https://verseLthefox.github.io)**  
+🎯 **[verseLthefox.github.io](https://verseLthefox.github.io/VerselTheFox/)**  
 
 ---
 
 ## 📮 Связаться со мной  
-- VK: [VerseLTheFox](https://vk.com/verselthefox)  
-- Telegram: [verselbasement](https://t.me/verselbasement)  
-- YouTube: [DolyneVersel](https://youtube.com/@dolyneversel)  
+- VK: [Версэль Долайн](https://vk.com/verselthefox)  
+- Telegram: [Погреб Версэля](https://t.me/verselbasement)  
+- YouTube: [VerseL](https://youtube.com/@dolyneversel)  
 
 ---
 
