@@ -28,8 +28,7 @@
 
 ## 📮 Связаться со мной  
 - VK: [Версэль Долайн](https://vk.com/verselthefox)  
-- Telegram: [Погреб Версэля](https://t.me/verselbasement)  
-- YouTube: [VerseL](https://youtube.com/@dolyneversel)  
+- Telegram: [VerseL](https://t.me/VerselOfficial)   
 
 ---
 
