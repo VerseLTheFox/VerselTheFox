@@ -1,11 +1,20 @@
-<html>
-    <head>
-        <title>VerseL Info - Me 🤍</title>
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta property="og:title" content="VerseL Info">
+		<meta property="og:description" content="Сайт-портфолио пользователя VerseL">
+		<meta property="og:image" content="https://t.me/i/userpic/320/VerselOfficial.jpg">
+		<meta property="og:type" content="website">
+		<link rel="icon" href="data/website.ico" type="image/vers-icon">
+		<meta name="description" content="Сайт-портфолио пользователя VerseL - соцсети, галерея артов и т.д.">
+		<meta name="keywords" content="VerseL, Верс, верс, versel, версэль, версел, Версэль, Версюша, Версэлька, Вермешель, Versel, VerselTheFox, VerselOfficial, verselthefox, verselofficial, фурри, арты, ссылки, соцсети">
+		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="data/style-for-index.css">
-    </head>
+		<title>VerseL Info - Me 🤍</title>
+		<link rel="stylesheet" href="data/style.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js"></script>
+	</head>
 	<body>
-		<br><br><br>
 		<div class="container3">
             html by VerseL <3
         </div>
@@ -24,5 +33,49 @@
 		>	Любимая игра — Minecraft, как бы банально это не звучало, но я вижу в ней не просто развлечение, а инструмент для творчества, для реализации и развития творческого мышления. 🤍<br><br>
 		>	Как ко мне относится — решите сами, я достаточно ранимый, но очень стараюсь не зависеть от чужого мнения. Моя обитель — интернет, ибо вживую мне сложно знакомиться с людьми. Спасибо что уделили время! 🤍<br><br>
         </div>
+		<div class="footer">
+		© 2025 VerseL. Все права защищены.<br><br>Версэлька - это лисяо 🤍
+		</div>
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Инициализация SmoothScroll
+			const initSmoothScroll = () => {
+				SmoothScroll({
+					animationTime: 800,
+					stepSize: 75,
+					accelerationDelta: 30,
+					accelerationMax: 2,
+					keyboardSupport: true,
+					arrowScroll: 50,
+					pulseAlgorithm: true,
+					pulseScale: 4,
+					pulseNormalize: 1,
+					touchpadSupport: true
+				});
+			};
+			
+			// Первая инициализация
+			initSmoothScroll();
+			
+			// Отслеживание изменения размера окна (работает для большинства случаев с zoom)
+			let resizeTimeout;
+			window.addEventListener('resize', () => {
+				clearTimeout(resizeTimeout);
+				resizeTimeout = setTimeout(initSmoothScroll, 150);
+			});
+			
+			// Отслеживание изменения высоты контента
+			let lastContentHeight = document.body.scrollHeight;
+			const checkHeightChange = () => {
+				const currentHeight = document.body.scrollHeight;
+				if (currentHeight !== lastContentHeight) {
+					lastContentHeight = currentHeight;
+					initSmoothScroll();
+				}
+				requestAnimationFrame(checkHeightChange);
+			};
+			checkHeightChange();
+		});
+	</script>
 	</body>
 </html>
