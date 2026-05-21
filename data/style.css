@@ -534,3 +534,29 @@ body * {
     font-size: 11px;
     border-top: 1px solid #333;
 }
+
+.button, .send-button, .home-button, .button-png, .sort-btn, .button-container3 {
+    border: 2px solid #8b00ff;
+}
+
+.button:hover, .send-button:hover, .home-button:hover, 
+.button-png:hover, .sort-btn:hover, .button-container3:hover {
+    background: transparent;
+    border-color: #a366ff;
+}
+
+.card {
+	background: rgba(15, 12, 22, 0.75);
+	backdrop-filter: blur(8px);
+	border-radius: 28px;
+	padding: 1.4rem 1.2rem;
+	border: 1px solid rgba(156, 77, 255, 0.25);
+	transition: all 0.3s;
+	text-decoration: none;
+}
+	
+.card:hover { 
+	border-color: #9b4dff;
+	transform: translateY(-5px);
+	text-decoration: none;
+}
