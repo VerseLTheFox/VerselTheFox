@@ -928,3 +928,15 @@ a:hover { color: #fff; }
     .art { animation: none; }
     .lightbox__img { animation: none; }
 }
+
+.music-btn .mb-on  { display: none; }
+.music-btn .mb-off { display: block; }
+
+.music-btn.is-on {
+    color: var(--purple-light);
+    border-color: var(--purple-border);
+    box-shadow: 0 0 18px rgba(163, 102, 255, 0.25);
+}
+.music-btn.is-on .mb-on  { display: block; }
+.music-btn.is-on .mb-off { display: none; }
+.music-btn.is-on:hover { color: #fff; }
