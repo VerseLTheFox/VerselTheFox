@@ -1,7 +1,3 @@
-/* ==========================================================================
-   VerseL Info — стили
-   ========================================================================== */
-
 @font-face {
     font-family: 'Minecraft';
     src: url('font/Minecraft.woff2') format('woff2'),
@@ -12,7 +8,6 @@
     font-display: swap;
 }
 
-/* --- Переменные --------------------------------------------------------- */
 :root {
     --purple:        #8b00ff;
     --purple-light:  #a366ff;
@@ -50,7 +45,6 @@
     }
 }
 
-/* --- Сброс и база ------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -84,7 +78,8 @@ a:hover { color: #fff; }
     border-radius: 6px;
 }
 
-/* --- Каркас ------------------------------------------------------------- */
+[hidden] { display: none !important; }
+
 .page {
     max-width: var(--content-wide);
     margin: 0 auto;
@@ -96,7 +91,6 @@ a:hover { color: #fff; }
 }
 .page--narrow { max-width: var(--content-w); }
 
-/* --- Верхняя навигация -------------------------------------------------- */
 .nav {
     position: fixed;
     top: 16px;
@@ -135,7 +129,6 @@ a:hover { color: #fff; }
     box-shadow: 0 0 16px var(--purple-glow);
 }
 
-/* --- Карточки ----------------------------------------------------------- */
 .card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
@@ -152,7 +145,6 @@ a:hover { color: #fff; }
     transform: translateY(-3px);
 }
 
-/* --- Профиль ------------------------------------------------------------ */
 .profile {
     padding: 40px 24px 36px;
     display: flex;
@@ -195,7 +187,6 @@ a:hover { color: #fff; }
     margin: 8px 0 24px;
 }
 
-/* --- Кнопки ------------------------------------------------------------- */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -260,14 +251,12 @@ a:hover { color: #fff; }
     transform: translateY(-2px);
 }
 
-/* --- Сетка навигации ---------------------------------------------------- */
 .nav-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 12px;
 }
 
-/* --- Ссылки ------------------------------------------------------------- */
 .links {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -313,7 +302,6 @@ a:hover { color: #fff; }
 
 .link-card--copy { cursor: pointer; }
 
-/* --- Заголовки секций --------------------------------------------------- */
 .section-title {
     font-size: 26px;
     margin: 0 0 6px;
@@ -328,7 +316,6 @@ a:hover { color: #fff; }
     margin: 0;
 }
 
-/* --- Текстовые блоки ---------------------------------------------------- */
 .prose {
     text-align: left;
     line-height: 1.8;
@@ -339,7 +326,6 @@ a:hover { color: #fff; }
 .prose p:last-child { margin-bottom: 0; }
 .prose strong { color: var(--text); }
 
-/* --- Галерея ------------------------------------------------------------ */
 .gallery-toolbar {
     display: flex;
     align-items: center;
@@ -433,7 +419,6 @@ a:hover { color: #fff; }
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Лайтбокс ----------------------------------------------------------- */
 .lightbox {
     position: fixed;
     inset: 0;
@@ -488,7 +473,6 @@ a:hover { color: #fff; }
 }
 .lightbox__close:hover { background: var(--purple); transform: rotate(90deg); }
 
-/* --- Футер -------------------------------------------------------------- */
 .footer {
     margin-top: auto;
     padding: 32px 20px 20px;
@@ -498,7 +482,6 @@ a:hover { color: #fff; }
     border-top: 1px solid rgba(156, 77, 255, 0.12);
 }
 
-/* --- Курсорный тултип --------------------------------------------------- */
 .cursor-tip {
     position: fixed;
     top: 0;
@@ -519,7 +502,6 @@ a:hover { color: #fff; }
 }
 .cursor-tip.is-visible { opacity: 1; }
 
-/* --- Статистика LemiCraft ----------------------------------------------- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -625,7 +607,6 @@ a:hover { color: #fff; }
     text-align: left;
 }
 
-/* --- Discord profile card ---------------------------------------------- */
 .card.dp {
     padding: 0;
     overflow: hidden;
@@ -637,7 +618,7 @@ a:hover { color: #fff; }
 
 .dp__banner {
     position: relative;
-    height: 84px;
+    height: 90px;
     background:
         radial-gradient(circle at 30% 130%, rgba(163, 102, 255, 0.55), transparent 55%),
         linear-gradient(135deg, #8b00ff 0%, #4a0b6b 55%, #25063a 100%);
@@ -645,35 +626,48 @@ a:hover { color: #fff; }
 
 .dp__avatar-wrap {
     position: absolute;
-    left: 20px;
-    bottom: -40px;
-    width: 88px;
-    height: 88px;
+    left: 22px;
+    bottom: -52px;
+    width: 104px;
+    height: 104px;
     z-index: 1;
 }
 
 .dp__avatar {
-    width: 88px;
-    height: 88px;
+    width: 104px;
+    height: 104px;
     border-radius: 50%;
     object-fit: cover;
-    border: 5px solid #150d1f;
     background: #0e0816;
-    box-sizing: border-box;
     display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.dp__decoration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 104px;
+    height: 104px;
+    transform: translate(-50%, -50%) scale(1.2);
+    transform-origin: center center;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 2;
 }
 
 .dp__status {
     position: absolute;
-    right: 0;
-    bottom: 2px;
+    right: 2px;
+    bottom: 6px;
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 5px solid #150d1f;
     background: #747f8d;
-    box-sizing: border-box;
     transition: background 0.3s;
+    z-index: 3;
+    box-shadow: 0 0 0 5px #150d1f;
 }
 .dp__status[data-status="online"]  { background: #23a55a; }
 .dp__status[data-status="idle"]    { background: #f0b232; }
@@ -687,7 +681,7 @@ a:hover { color: #fff; }
 }
 
 .dp__body {
-    padding: 52px 20px 20px;
+    padding: 68px 22px 22px;
     display: flex;
     flex-direction: column;
 }
@@ -705,6 +699,28 @@ a:hover { color: #fff; }
     color: #fff;
     line-height: 1.15;
     word-break: break-word;
+}
+
+.dp__guild-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(156, 77, 255, 0.15);
+    border: 1px solid rgba(156, 77, 255, 0.28);
+    font-size: 11px;
+    color: var(--purple-light);
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.4;
+}
+.dp__guild-tag img {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    object-fit: cover;
+    display: block;
 }
 
 .dp__badges {
@@ -810,47 +826,6 @@ a:hover { color: #fff; }
     font-style: italic;
 }
 
-/* --- SPA: маршруты и переходы ------------------------------------------- */
-[hidden] { display: none !important; }
-
-.route { }
-
-.route--entering {
-    animation: routeIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.route--leaving {
-    animation: routeOut 0.42s cubic-bezier(0.4, 0, 0.6, 1) both;
-    pointer-events: none;
-}
-
-@keyframes routeIn {
-    from {
-        opacity: 0;
-        transform: translateY(24px) scale(0.99);
-        filter: blur(4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
-
-@keyframes routeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-16px) scale(0.99);
-        filter: blur(4px);
-    }
-}
-
-/* --- Кнопка музыки ------------------------------------------------------ */
 .music-btn {
     position: fixed;
     top: 16px;
@@ -881,19 +856,18 @@ a:hover { color: #fff; }
     transform: scale(1.06);
 }
 
-.music-btn__on  { display: none; }
-.music-btn__off { display: block; }
+.music-btn .mb-on  { display: none; }
+.music-btn .mb-off { display: block; }
 
 .music-btn.is-on {
     color: var(--purple-light);
     border-color: var(--purple-border);
     box-shadow: 0 0 18px rgba(163, 102, 255, 0.25);
 }
-.music-btn.is-on .music-btn__on  { display: block; }
-.music-btn.is-on .music-btn__off { display: none; }
+.music-btn.is-on .mb-on  { display: block; }
+.music-btn.is-on .mb-off { display: none; }
 .music-btn.is-on:hover { color: #fff; }
 
-/* --- Адаптив ------------------------------------------------------------ */
 @media (max-width: 640px) {
     body { padding: 14px; font-size: 15px; }
     .page { padding-top: 76px; gap: 18px; }
@@ -906,12 +880,15 @@ a:hover { color: #fff; }
     .card { padding: 20px 16px; border-radius: var(--r-md); }
     .stat__value { font-size: 22px; }
     .cursor-tip { display: none; }
-    .dp__banner { height: 72px; }
-    .dp__avatar-wrap { width: 72px; height: 72px; bottom: -32px; left: 16px; }
-    .dp__avatar { width: 72px; height: 72px; border-width: 4px; }
-    .dp__status { width: 18px; height: 18px; border-width: 4px; bottom: 0; }
-    .dp__body { padding: 44px 16px 18px; }
+
+    .dp__banner { height: 76px; }
+    .dp__avatar-wrap { width: 84px; height: 84px; bottom: -42px; left: 16px; }
+    .dp__avatar { width: 84px; height: 84px; }
+    .dp__decoration { width: 84px; height: 84px; }
+    .dp__status { width: 18px; height: 18px; right: 1px; bottom: 4px; box-shadow: 0 0 0 4px #150d1f; }
+    .dp__body { padding: 56px 16px 18px; }
     .dp__display-name { font-size: 19px; }
+
     .music-btn { top: 12px; left: 12px; width: 40px; height: 40px; }
     .music-btn svg { width: 20px; height: 20px; }
 }
@@ -921,22 +898,8 @@ a:hover { color: #fff; }
     .profile__name { font-size: 28px; }
 }
 
-/* --- Уважение к "меньше анимаций" --------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-    .route--entering,
-    .route--leaving { animation: none; }
     .art { animation: none; }
     .lightbox__img { animation: none; }
+    .dp__status[data-status="loading"] { animation: none; }
 }
-
-.music-btn .mb-on  { display: none; }
-.music-btn .mb-off { display: block; }
-
-.music-btn.is-on {
-    color: var(--purple-light);
-    border-color: var(--purple-border);
-    box-shadow: 0 0 18px rgba(163, 102, 255, 0.25);
-}
-.music-btn.is-on .mb-on  { display: block; }
-.music-btn.is-on .mb-off { display: none; }
-.music-btn.is-on:hover { color: #fff; }
