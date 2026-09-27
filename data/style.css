@@ -947,3 +947,38 @@ a:hover { color: #fff; }
     .lightbox__img { animation: none; }
     .dp__status[data-status="loading"] { animation: none; }
 }
+
+.enter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.enter-overlay span {
+    color: #ffffff;
+    font-size: clamp(22px, 4vw, 38px);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 24px rgba(163, 102, 255, 0.6), 0 0 4px rgba(255, 255, 255, 0.35);
+    animation: enterPulse 2.4s ease-in-out infinite;
+}
+.enter-overlay.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+@keyframes enterPulse {
+    0%, 100% { opacity: 0.75; }
+    50%      { opacity: 1; }
+}
