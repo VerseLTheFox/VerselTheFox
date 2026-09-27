@@ -31,7 +31,7 @@
     <a href="#/"      class="nav__link" data-route="/">Главная</a>
     <a href="#/me"    class="nav__link" data-route="/me">Обо мне</a>
     <a href="#/links" class="nav__link" data-route="/links">Ссылки</a>
-    <a href="#/arts"  class="nav__link" data-route="/arts">Арты</a>
+    <a href="#/arts"  class="nav__link" data-route="/arts">Галерея</a>
 </nav>
 
 <main id="app">
@@ -53,12 +53,17 @@
             <div class="dp__banner">
                 <div class="dp__avatar-wrap">
                     <img class="dp__avatar" id="dpAvatar" src="./data/avatar.jpg" alt="">
+                    <img class="dp__decoration" id="dpDecoration" src="https://cdn.discordapp.com/media/v1/collectibles-shop/1432550258256121966/animated.png" alt="">
                     <span class="dp__status" id="dpStatus" data-status="loading" aria-hidden="true"></span>
                 </div>
             </div>
             <div class="dp__body">
                 <div class="dp__name-row">
                     <span class="dp__display-name" id="dpName">Загрузка…</span>
+                    <span class="dp__guild-tag" id="dpGuildTag">
+						<img src="https://cdn.discordapp.com/clan-badges/1077258761443483708/0453d6f081e4f524e447f2158ddc9c63.png?size=16" alt="">
+						<span>LGBT</span>
+					</span>
                     <span class="dp__badges" aria-label="Значки профиля">
                         <img src="https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png" alt="HypeSquad Brilliance" title="HypeSquad Brilliance">
                         <img src="https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png" alt="Discord Nitro" title="Discord Nitro">
@@ -73,10 +78,10 @@
         </section>
 
         <section class="nav-grid" aria-label="Разделы">
-            <a href="#/arts"  class="btn btn--ghost btn--block">Галерея</a>
-            <a href="#/links" class="btn btn--ghost btn--block">Ссылки</a>
-            <a href="#/me"    class="btn btn--ghost btn--block">Обо мне</a>
-        </section>
+			<a href="#/me"    class="btn btn--ghost btn--block">Обо мне</a>
+			<a href="#/links" class="btn btn--ghost btn--block">Ссылки</a>
+			<a href="#/arts"  class="btn btn--ghost btn--block">Галерея</a>
+		</section>
 
         <section class="card card--hover">
             <p class="section-sub">
@@ -212,8 +217,8 @@
     console.log('[versel] base url:', BASE);
 
     var DISCORD_ID = '1158051100268691466';
-	var PROXY_URL = 'https://lemi-stats.89087911021nikita.workers.dev/';
-	var LANYARD_PROXY = 'https://rapid-frog-cda9.89087911021nikita.workers.dev/';
+    var PROXY_URL = 'https://lemi-stats.89087911021nikita.workers.dev/';
+    var LANYARD_PROXY = 'https://rapid-frog-cda9.89087911021nikita.workers.dev/';
     var MUSIC_VOLUME = 0.07;
 
     var musicBtn = document.getElementById('musicBtn');
@@ -501,100 +506,100 @@
     }
 
     async function fetchLanyard() {
-		var lanyardUrl = 'https://api.lanyard.rest/v1/users/' + DISCORD_ID;
-		var proxyUrl = LANYARD_PROXY + '?url=' + encodeURIComponent(lanyardUrl);
-		console.log('[presence] fetching via worker:', proxyUrl);
-		try {
-			var r = await fetch(proxyUrl, { cache: 'no-store' });
-			console.log('[presence] worker status:', r.status);
-			if (!r.ok) {
-				console.warn('[presence] worker returned HTTP ' + r.status);
-				return null;
-			}
-			var text = await r.text();
-			console.log('[presence] worker raw response:', text.slice(0, 300));
-			var json = JSON.parse(text);
-			if (!json || !json.success) {
-				console.warn('[presence] lanyard says success=false:', json);
-				return null;
-			}
-			return json;
-		} catch (e) {
-			console.error('[presence] worker fetch failed:', e);
-			return null;
-		}
-	}
+        var lanyardUrl = 'https://api.lanyard.rest/v1/users/' + DISCORD_ID;
+        var proxyUrl = LANYARD_PROXY + '?url=' + encodeURIComponent(lanyardUrl);
+        console.log('[presence] fetching via worker:', proxyUrl);
+        try {
+            var r = await fetch(proxyUrl, { cache: 'no-store' });
+            console.log('[presence] worker status:', r.status);
+            if (!r.ok) {
+                console.warn('[presence] worker returned HTTP ' + r.status);
+                return null;
+            }
+            var text = await r.text();
+            console.log('[presence] worker raw response:', text.slice(0, 300));
+            var json = JSON.parse(text);
+            if (!json || !json.success) {
+                console.warn('[presence] lanyard success=false:', json);
+                return null;
+            }
+            return json;
+        } catch (e) {
+            console.error('[presence] worker fetch failed:', e);
+            return null;
+        }
+    }
 
     var presenceFailedOnce = false;
 
-	async function loadPresence() {
-		if (!DISCORD_ID || DISCORD_ID.length < 5) return;
-		try {
-			var json = await fetchLanyard();
-			if (!json) throw new Error('worker fetch failed');
-			var d = json.data;
+    async function loadPresence() {
+        if (!DISCORD_ID || DISCORD_ID.length < 5) return;
+        try {
+            var json = await fetchLanyard();
+            if (!json) throw new Error('worker fetch failed');
+            var d = json.data;
 
-			var user = d.discord_user || {};
-			var display = user.display_name || user.global_name || user.username || 'VerseL';
-			var discrimTag = user.discriminator && user.discriminator !== '0' ? '#' + user.discriminator : '';
-			var username = '@' + (user.username || 'verselthefox') + discrimTag;
+            var user = d.discord_user || {};
+            var display = user.display_name || user.global_name || user.username || 'VerseL';
+            var discrimTag = user.discriminator && user.discriminator !== '0' ? '#' + user.discriminator : '';
+            var username = '@' + (user.username || 'verselthefox') + discrimTag;
 
-			var avatarUrl = user.avatar
-				? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=160'
-				: 'https://cdn.discordapp.com/embed/avatars/0.png';
+            var avatarUrl = user.avatar
+                ? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=160'
+                : 'https://cdn.discordapp.com/embed/avatars/0.png';
 
-			$name.textContent = display;
-			$user.textContent = username;
-			$avatar.src = avatarUrl;
-			$avatar.alt = display;
-			$status.dataset.status = d.discord_status || 'offline';
+            $name.textContent = display;
+            $user.textContent = username;
+            $avatar.src = avatarUrl;
+            $avatar.alt = display;
+            $status.dataset.status = d.discord_status || 'offline';
 
-			var acts = Array.isArray(d.activities)
-				? d.activities.filter(function (a) { return a.type !== 4; })
-				: [];
+            var acts = Array.isArray(d.activities)
+                ? d.activities.filter(function (a) { return a.type !== 4; })
+                : [];
 
-			if (d.listening_to_spotify && d.spotify) {
-				var sp = d.spotify;
-				renderActivity({
-					icon: '♪',
-					iconUrl: sp.album_art_url || null,
-					name: 'Spotify',
-					details: sp.song,
-					state: 'от ' + sp.artist,
-					start: sp.timestamps && sp.timestamps.start
-				});
-			} else if (acts.length) {
-				var a = acts[0];
-				var iconMap = { 0: '🎮', 1: '📡', 2: '🎧', 3: '📺', 5: '🏆' };
-				var iconUrl = null;
-				if (a.assets && a.assets.large_image) {
-					var li = a.assets.large_image;
-					if (li.indexOf('mp:') === 0) iconUrl = 'https://media.discordapp.net/' + li.slice(3);
-					else if (a.application_id) iconUrl = 'https://cdn.discordapp.com/app-assets/' + a.application_id + '/' + li + '.png';
-				}
-				renderActivity({
-					icon: iconMap[a.type] || '▶',
-					iconUrl: iconUrl,
-					name: a.name || 'Unknown',
-					details: a.details || '',
-					state: a.state || '',
-					start: a.timestamps && a.timestamps.start
-				});
-			} else {
-				$slot.innerHTML = '<div class="dp__empty">нет активности</div>';
-			}
+            if (d.listening_to_spotify && d.spotify) {
+                var sp = d.spotify;
+                renderActivity({
+                    icon: '♪',
+                    iconUrl: sp.album_art_url || null,
+                    name: 'Spotify',
+                    details: sp.song,
+                    state: 'от ' + sp.artist,
+                    start: sp.timestamps && sp.timestamps.start
+                });
+            } else if (acts.length) {
+                var a = acts[0];
+                var iconMap = { 0: '🎮', 1: '📡', 2: '🎧', 3: '📺', 5: '🏆' };
+                var iconUrl = null;
+                if (a.assets && a.assets.large_image) {
+                    var li = a.assets.large_image;
+                    if (li.indexOf('mp:') === 0) iconUrl = 'https://media.discordapp.net/' + li.slice(3);
+                    else if (a.application_id) iconUrl = 'https://cdn.discordapp.com/app-assets/' + a.application_id + '/' + li + '.png';
+                }
+                renderActivity({
+                    icon: iconMap[a.type] || '▶',
+                    iconUrl: iconUrl,
+                    name: a.name || 'Unknown',
+                    details: a.details || '',
+                    state: a.state || '',
+                    start: a.timestamps && a.timestamps.start
+                });
+            } else {
+                $slot.innerHTML = '<div class="dp__empty">нет активности</div>';
+            }
 
-			presenceFailedOnce = false;
-		} catch (err) {
-			if (!presenceFailedOnce) {
-				presenceFailedOnce = true;
-				console.error('[presence] failed:', err);
-			}
-			$name.textContent = 'статус недоступен';
-			$status.dataset.status = 'offline';
-			$slot.innerHTML = '<div class="dp__empty">не удалось получить данные из Lanyard</div>';
-		}
-	}
+            presenceFailedOnce = false;
+        } catch (err) {
+            if (!presenceFailedOnce) {
+                presenceFailedOnce = true;
+                console.error('[presence] failed:', err);
+            }
+            $name.textContent = 'статус недоступен';
+            $status.dataset.status = 'offline';
+            $slot.innerHTML = '<div class="dp__empty">не удалось получить данные из Lanyard</div>';
+        }
+    }
 
     loadPresence();
     setInterval(loadPresence, 20000);
