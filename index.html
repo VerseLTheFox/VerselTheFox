@@ -499,31 +499,52 @@
             '</div>';
     }
 
+    async function fetchLanyard() {
+    var direct = 'https://api.lanyard.rest/v1/users/' + DISCORD_ID;
+    var endpoints = [
+        direct,
+        'https://api.allorigins.win/raw?url=' + encodeURIComponent(direct),
+        'https://corsproxy.io/?' + encodeURIComponent(direct)
+    ];
+    for (var i = 0; i < endpoints.length; i++) {
+        try {
+            var r = await fetch(endpoints[i], { cache: 'no-store' });
+            if (!r.ok) continue;
+            var json = await r.json();
+            if (json && json.success) return json;
+        } catch (e) {
+            continue;
+        }
+    }
+    return null;
+}
+
+var presenceFailedOnce = false;
+
     async function loadPresence() {
         if (!DISCORD_ID || DISCORD_ID.length < 5) return;
         try {
-            var r = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_ID, { cache: 'no-store' });
-            var json = await r.json();
-            if (!json.success) throw new Error('not in Lanyard');
+            var json = await fetchLanyard();
+            if (!json) throw new Error('all endpoints failed');
             var d = json.data;
-
+    
             var user = d.discord_user || {};
             var display = user.display_name || user.global_name || user.username || 'VerseL';
             var discrimTag = user.discriminator && user.discriminator !== '0' ? '#' + user.discriminator : '';
             var username = '@' + (user.username || 'verselthefox') + discrimTag;
-
+    
             var avatarUrl = user.avatar
                 ? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=160'
                 : 'https://cdn.discordapp.com/embed/avatars/0.png';
-
+    
             $name.textContent = display;
             $user.textContent = username;
             $avatar.src = avatarUrl;
             $avatar.alt = display;
             $status.dataset.status = d.discord_status || 'offline';
-
+    
             var acts = Array.isArray(d.activities) ? d.activities.filter(function (a) { return a.type !== 4; }) : [];
-
+    
             if (d.listening_to_spotify && d.spotify) {
                 var sp = d.spotify;
                 renderActivity({
@@ -554,13 +575,18 @@
             } else {
                 $slot.innerHTML = '<div class="dp__empty">нет активности</div>';
             }
+    
+            presenceFailedOnce = false;
         } catch (err) {
+            if (!presenceFailedOnce) {
+                presenceFailedOnce = true;
+                console.warn('[presence] Lanyard недоступен — все три endpoint\'а вернули ошибку. Проверь консоль.');
+            }
             $name.textContent = 'статус недоступен';
             $status.dataset.status = 'offline';
             $slot.innerHTML = '<div class="dp__empty">не удалось получить данные из Lanyard</div>';
         }
     }
-
     loadPresence();
     setInterval(loadPresence, 20000);
 
