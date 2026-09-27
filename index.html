@@ -7,7 +7,7 @@
 <meta name="description" content="Сайт-портфолио VerseL: соцсети, галерея артов, статистика LemiCraft.">
 <meta name="keywords" content="VerseL, Версэль, VerselTheFox, фурри, арты, Minecraft">
 <meta name="theme-color" content="#8b00ff">
-<link rel="icon" href="data/website.ico" type="image/x-icon">
+<link rel="icon" href="./data/website.ico" type="image/x-icon">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="VerseL Info">
@@ -15,8 +15,8 @@
 <meta property="og:image" content="https://t.me/i/userpic/320/VerselOfficial.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="preload" href="data/font/Minecraft.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="data/style.css">
+<link rel="preload" href="./data/font/Minecraft.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./data/style.css">
 </head>
 <body>
 
@@ -37,12 +37,12 @@
     <section class="page page--narrow route" data-route="/">
         <section class="card profile">
             <a href="tg://resolve?domain=VerselOfficial" class="profile__avatar-link">
-                <img src="data/avatar.jpg" alt="Аватар VerseL" class="profile__avatar">
+                <img src="./data/avatar.jpg" alt="Аватар VerseL" class="profile__avatar">
             </a>
             <h1 class="profile__name">VerseL</h1>
             <p class="profile__handle">@VerselOfficial</p>
             <a href="tg://resolve?domain=VerselOfficial" class="btn btn--hollow btn--lg">
-                <img src="icons/telegram.png" alt="">
+                <img src="./icons/telegram.png" alt="">
                 <span>Отправить сообщение</span>
             </a>
         </section>
@@ -50,7 +50,7 @@
         <section class="card dp" id="presence" aria-live="polite">
             <div class="dp__banner">
                 <div class="dp__avatar-wrap">
-                    <img class="dp__avatar" id="dpAvatar" src="data/avatar.jpg" alt="">
+                    <img class="dp__avatar" id="dpAvatar" src="./data/avatar.jpg" alt="">
                     <span class="dp__status" id="dpStatus" data-status="loading" aria-hidden="true"></span>
                 </div>
             </div>
@@ -104,30 +104,30 @@
 
         <section class="links">
             <a href="https://vk.com/verselthefox" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/vk.png" alt=""> <span>VKontakte</span>
+                <img src="./icons/vk.png" alt=""> <span>VKontakte</span>
             </a>
             <a href="https://t.me/verselbasement" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/telegram.png" alt=""> <span>Telegram</span>
+                <img src="./icons/telegram.png" alt=""> <span>Telegram</span>
             </a>
             <a href="https://youtube.com/@dolyneversel" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/youtube.png" alt=""> <span>YouTube</span>
+                <img src="./icons/youtube.png" alt=""> <span>YouTube</span>
             </a>
             <a href="https://steamcommunity.com/id/VerselOfficial/" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/steam.png" alt=""> <span>Steam</span>
+                <img src="./icons/steam.png" alt=""> <span>Steam</span>
             </a>
             <a href="https://twitch.com/verselofficial" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/twitch.png" alt=""> <span>Twitch</span>
+                <img src="./icons/twitch.png" alt=""> <span>Twitch</span>
             </a>
             <a href="https://discord.gg/fw5HGGK9FY" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/discord.png" alt=""> <span>Discord server</span>
+                <img src="./icons/discord.png" alt=""> <span>Discord server</span>
             </a>
             <a href="#" class="link-card link-card--copy" id="copy-discord" data-copy="verselthefox" aria-label="Скопировать Discord-юзернейм verselthefox">
-                <img src="icons/discord.png" alt="">
+                <img src="./icons/discord.png" alt="">
                 <span>Discord — verselthefox</span>
                 <span class="link-card__badge" id="copy-badge">копировать</span>
             </a>
             <a href="https://tiktok" class="link-card" target="_blank" rel="noopener noreferrer">
-                <img src="icons/tiktok.png" alt="">
+                <img src="./icons/tiktok.png" alt="">
                 <span>TikTok</span>
                 <span class="link-card__badge">скоро…</span>
             </a>
@@ -199,455 +199,570 @@
 </div>
 
 <script>
-const DISCORD_ID = '1158051100268691466';
-const PROXY_URL = 'https://lemi-stats.89087911021nikita.workers.dev/';
-const ROUTE_DURATION = 620;
-const MUSIC_VOLUME = 0.25;
-const MUSIC_MAX_PROBE = 40;
+(function () {
+    'use strict';
 
-const musicBtn = document.getElementById('musicBtn');
-const audio = new Audio();
-audio.preload = 'auto';
-audio.volume = MUSIC_VOLUME;
+    var BASE = new URL('./', location.href).href;
 
-let playlist = [];
-let trackIndex = 0;
-let musicEnabled = false;
-
-async function discoverMusicFromGitHub() {
-    const host = location.hostname;
-    const pathParts = location.pathname.split('/').filter(Boolean);
-    if (!host.endsWith('.github.io') || pathParts.length === 0) return [];
-    const user = host.split('.')[0];
-    const repo = pathParts[0];
-    const api = `https://api.github.com/repos/${user}/${repo}/contents/data/music`;
-    try {
-        const r = await fetch(api, { cache: 'no-store' });
-        if (!r.ok) return [];
-        const files = await r.json();
-        if (!Array.isArray(files)) return [];
-        return files
-            .filter(f => f.type === 'file' && /\.mp3$/i.test(f.name))
-            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
-            .map(f => `data/music/${f.name}`);
-    } catch (e) {
-        return [];
+    function abs(path) {
+        try { return new URL(path, BASE).href; }
+        catch (e) { return path; }
     }
-}
 
-async function discoverMusicByProbe() {
-    const candidates = Array.from({ length: MUSIC_MAX_PROBE }, (_, i) => `data/music/${i + 1}.mp3`);
-    const results = await Promise.all(candidates.map(async url => {
+    console.log('[versel] base url:', BASE);
+
+    var DISCORD_ID = '1158051100268691466';
+    var PROXY_URL = 'https://lemi-stats.89087911021nikita.workers.dev/';
+    var MUSIC_VOLUME = 0.25;
+
+    var musicBtn = document.getElementById('musicBtn');
+    var audio = new Audio();
+    audio.preload = 'auto';
+    audio.volume = MUSIC_VOLUME;
+
+    var playlist = [];
+    var trackIndex = 0;
+    var musicEnabled = false;
+
+    function showMusicError(msg) {
+        musicBtn.classList.add('is-error');
+        musicBtn.setAttribute('title', msg);
+        console.warn('[music] ' + msg);
+    }
+
+    async function fetchMusicFromGitHub() {
         try {
-            const r = await fetch(url, { method: 'HEAD' });
-            return r.ok ? url : null;
+            var host = location.hostname;
+            var parts = location.pathname.split('/').filter(Boolean);
+            if (!host.endsWith('.github.io') || parts.length < 1) {
+                console.log('[music] not on github.io, skip GitHub API');
+                return [];
+            }
+            var user = host.slice(0, host.indexOf('.'));
+            var repo = parts[0];
+            var api = 'https://api.github.com/repos/' + user + '/' + repo + '/contents/data/music';
+            console.log('[music] GitHub API:', api);
+            var r = await fetch(api, { cache: 'no-store' });
+            console.log('[music] GitHub API status:', r.status);
+            if (!r.ok) return [];
+            var files = await r.json();
+            if (!Array.isArray(files)) {
+                console.warn('[music] GitHub API returned non-array:', files);
+                return [];
+            }
+            var list = files
+                .filter(function (f) { return f && f.type === 'file' && /\.mp3$/i.test(f.name); })
+                .map(function (f) { return 'data/music/' + f.name; })
+                .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+            console.log('[music] GitHub API found:', list);
+            return list;
         } catch (e) {
-            return null;
+            console.warn('[music] GitHub API failed:', e);
+            return [];
         }
-    }));
-    return results.filter(Boolean);
-}
-
-async function discoverMusic() {
-    let list = await discoverMusicFromGitHub();
-    if (list.length === 0) list = await discoverMusicByProbe();
-    return list;
-}
-
-function loadTrack(i) {
-    if (!playlist.length) return;
-    trackIndex = ((i % playlist.length) + playlist.length) % playlist.length;
-    audio.src = playlist[trackIndex];
-}
-
-audio.addEventListener('ended', () => {
-    if (!playlist.length) return;
-    loadTrack(trackIndex + 1);
-    if (musicEnabled) audio.play().catch(() => {});
-});
-
-function setMusic(on) {
-    musicEnabled = on;
-    if (on) {
-        if (!audio.src && playlist.length) loadTrack(trackIndex);
-        audio.play().catch(() => {});
-        musicBtn.classList.add('is-on');
-        musicBtn.setAttribute('aria-label', 'Выключить музыку');
-        musicBtn.setAttribute('title', 'Выключить музыку');
-    } else {
-        audio.pause();
-        musicBtn.classList.remove('is-on');
-        musicBtn.setAttribute('aria-label', 'Включить музыку');
-        musicBtn.setAttribute('title', 'Включить музыку');
-    }
-    try { localStorage.setItem('versel.music', on ? '1' : '0'); } catch (e) {}
-}
-
-musicBtn.addEventListener('click', () => setMusic(!musicEnabled));
-
-(async function initMusic() {
-    playlist = await discoverMusic();
-    if (!playlist.length) {
-        musicBtn.style.display = 'none';
-        return;
-    }
-    let saved = null;
-    try { saved = localStorage.getItem('versel.music'); } catch (e) {}
-    if (saved === '1') {
-        setMusic(true);
-        const tryResume = () => {
-            if (musicEnabled && audio.paused) audio.play().catch(() => {});
-        };
-        document.addEventListener('click', tryResume, { once: true });
-        document.addEventListener('keydown', tryResume, { once: true });
-        document.addEventListener('touchstart', tryResume, { once: true });
-    }
-})();
-
-function getPath() {
-    const h = location.hash;
-    if (!h || h === '#' || h === '#/') return '/';
-    return h.slice(1).split('?')[0];
-}
-
-const routes = [...document.querySelectorAll('.route')];
-let currentPath = null;
-
-function updateNav(path) {
-    document.querySelectorAll('.nav__link').forEach(link => {
-        if (link.dataset.route === path) link.setAttribute('aria-current', 'page');
-        else link.removeAttribute('aria-current');
-    });
-}
-
-function navigate() {
-    const path = getPath();
-    if (path === currentPath) return;
-
-    const target  = routes.find(r => r.dataset.route === path) || routes[0];
-    const current = routes.find(r => !r.hidden && r !== target);
-
-    updateNav(path);
-    if (path === '/stats') initStats();
-    currentPath = path;
-
-    if (!current) {
-        if (target.hidden) {
-            target.hidden = false;
-            target.classList.remove('route--leaving');
-            void target.offsetWidth;
-            target.classList.add('route--entering');
-            setTimeout(() => target.classList.remove('route--entering'), ROUTE_DURATION);
-        }
-        return;
     }
 
-    current.classList.remove('route--entering');
-    current.classList.add('route--leaving');
-
-    setTimeout(() => {
-        current.hidden = true;
-        current.classList.remove('route--leaving');
-
-        target.hidden = false;
-        target.classList.remove('route--leaving');
-        void target.offsetWidth;
-        target.classList.add('route--entering');
-        setTimeout(() => target.classList.remove('route--entering'), ROUTE_DURATION);
-
-        window.scrollTo({ top: 0, behavior: 'instant' });
-    }, ROUTE_DURATION * 0.6);
-}
-
-window.addEventListener('hashchange', navigate);
-navigate();
-
-const presenceEl = document.getElementById('presence');
-const $name      = document.getElementById('dpName');
-const $user      = document.getElementById('dpUsername');
-const $avatar    = document.getElementById('dpAvatar');
-const $status    = document.getElementById('dpStatus');
-const $slot      = document.getElementById('dpActivitySlot');
-
-const escapeHtml = s => (s ?? '').replace(/[&<>"']/g, m => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-}[m]));
-
-function renderActivity(opts) {
-    const iconHtml = opts.iconUrl
-        ? `${escapeHtml(opts.icon)}<img src="${escapeHtml(opts.iconUrl)}" alt="" onerror="this.remove()">`
-        : escapeHtml(opts.icon);
-
-    let timeHtml = '';
-    if (opts.start) {
-        const mins = Math.max(0, Math.floor((Date.now() - opts.start) / 60000));
-        const hrs  = Math.floor(mins / 60);
-        const timeStr = hrs > 0 ? `${hrs} ч ${mins % 60} мин` : `${mins} мин`;
-        timeHtml = `<div class="dp__activity-time">уже ${timeStr}</div>`;
-    }
-
-    $slot.innerHTML = `
-        <div class="dp__activity">
-            <div class="dp__activity-icon">${iconHtml}</div>
-            <div class="dp__activity-info">
-                <div class="dp__activity-name">${escapeHtml(opts.name)}</div>
-                ${opts.details ? `<div class="dp__activity-detail">${escapeHtml(opts.details)}</div>` : ''}
-                ${opts.state   ? `<div class="dp__activity-detail">${escapeHtml(opts.state)}</div>`   : ''}
-                ${timeHtml}
-            </div>
-        </div>`;
-}
-
-async function loadPresence() {
-    if (!DISCORD_ID || DISCORD_ID.length < 5) return;
-    try {
-        const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, { cache: 'no-store' });
-        const json = await r.json();
-        if (!json.success) throw new Error('not in Lanyard');
-        const d = json.data;
-
-        const user       = d.discord_user || {};
-        const display    = user.display_name || user.global_name || user.username || 'VerseL';
-        const discrimTag = user.discriminator && user.discriminator !== '0' ? '#' + user.discriminator : '';
-        const username   = '@' + (user.username || 'verselthefox') + discrimTag;
-
-        const avatarUrl = user.avatar
-            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=160`
-            : `https://cdn.discordapp.com/embed/avatars/0.png`;
-
-        $name.textContent   = display;
-        $user.textContent   = username;
-        $avatar.src         = avatarUrl;
-        $avatar.alt         = display;
-        $status.dataset.status = d.discord_status || 'offline';
-
-        const acts = Array.isArray(d.activities) ? d.activities.filter(a => a.type !== 4) : [];
-
-        if (d.listening_to_spotify && d.spotify) {
-            const sp = d.spotify;
-            renderActivity({
-                icon: '♪', iconUrl: sp.album_art_url || null,
-                name: 'Spotify',
-                details: sp.song, state: `от ${sp.artist}`,
-                start: sp.timestamps?.start
-            });
-        } else if (acts.length) {
-            const a = acts[0];
-            const iconMap = { 0: '🎮', 1: '📡', 2: '🎧', 3: '📺', 5: '🏆' };
-            let iconUrl = null;
-            if (a.assets?.large_image) {
-                const li = a.assets.large_image;
-                if (li.startsWith('mp:'))      iconUrl = `https://media.discordapp.net/${li.slice(3)}`;
-                else if (a.application_id)     iconUrl = `https://cdn.discordapp.com/app-assets/${a.application_id}/${li}.png`;
+    async function probeMusicFiles() {
+        console.log('[music] probe data/music/1.mp3 .. 40.mp3');
+        var results = [];
+        var misses = 0;
+        for (var i = 1; i <= 40; i++) {
+            var rel = 'data/music/' + i + '.mp3';
+            var url = abs(rel);
+            try {
+                var r = await fetch(url, { method: 'HEAD' });
+                if (r.ok) {
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('audio') !== -1 || ct.indexOf('mpeg') !== -1 || ct === '' || ct.indexOf('octet-stream') !== -1) {
+                        results.push(rel);
+                        misses = 0;
+                    } else {
+                        misses++;
+                    }
+                } else {
+                    misses++;
+                }
+            } catch (e) {
+                misses++;
             }
-            renderActivity({
-                icon: iconMap[a.type] || '▶', iconUrl,
-                name: a.name || 'Unknown',
-                details: a.details || '', state: a.state || '',
-                start: a.timestamps?.start
-            });
+            if (misses >= 3) break;
+        }
+        console.log('[music] probe found:', results);
+        return results;
+    }
+
+    async function discoverMusic() {
+        var list = await fetchMusicFromGitHub();
+        if (list.length === 0) list = await probeMusicFiles();
+        return list;
+    }
+
+    function loadTrack(i) {
+        if (!playlist.length) return;
+        trackIndex = ((i % playlist.length) + playlist.length) % playlist.length;
+        var url = abs(playlist[trackIndex]);
+        console.log('[music] loading track:', url);
+        audio.src = url;
+    }
+
+    audio.addEventListener('ended', function () {
+        if (!playlist.length) return;
+        loadTrack(trackIndex + 1);
+        if (musicEnabled) audio.play().catch(function () {});
+    });
+
+    audio.addEventListener('error', function () {
+        console.warn('[music] audio error on', audio.src);
+    });
+
+    async function setMusic(on) {
+        if (on) {
+            if (!playlist.length) {
+                playlist = await discoverMusic();
+                if (!playlist.length) {
+                    showMusicError('Файлы .mp3 в data/music/ не найдены');
+                    return;
+                }
+                loadTrack(0);
+            }
+            try {
+                await audio.play();
+                musicEnabled = true;
+                musicBtn.classList.add('is-on');
+                musicBtn.setAttribute('aria-label', 'Выключить музыку');
+                musicBtn.setAttribute('title', 'Выключить музыку');
+                try { localStorage.setItem('versel.music', '1'); } catch (e) {}
+            } catch (e) {
+                console.warn('[music] play blocked:', e);
+                musicEnabled = false;
+                musicBtn.classList.remove('is-on');
+                musicBtn.setAttribute('title', 'Нажми ещё раз — браузер блокирует автоплей');
+            }
         } else {
-            $slot.innerHTML = '<div class="dp__empty">нет активности</div>';
+            musicEnabled = false;
+            audio.pause();
+            musicBtn.classList.remove('is-on');
+            musicBtn.setAttribute('aria-label', 'Включить музыку');
+            musicBtn.setAttribute('title', 'Включить музыку');
+            try { localStorage.setItem('versel.music', '0'); } catch (e) {}
         }
-    } catch (err) {
-        $name.textContent = 'статус недоступен';
-        $status.dataset.status = 'offline';
-        $slot.innerHTML = '<div class="dp__empty">не удалось получить данные из Lanyard</div>';
-    }
-}
-
-loadPresence();
-setInterval(loadPresence, 20000);
-
-const rng = (from, to, extra) =>
-    Array.from({ length: to - from + 1 }, (_, i) => ({ src: `arts/${from + i}.jpg`, ...extra }));
-
-const ARTS = [
-    ...rng(1, 2,   { author: "gnilayapechen",   label: "Telegram channel" }),
-    ...rng(3, 5,   { author: "Wqzxcoi",         label: "Telegram" }),
-    ...rng(6, 7,   { author: "Cloud_kit1",      label: "Telegram channel" }),
-    { src: "arts/8.jpg",  author: "ERSHIKI_HINKALI", label: "Telegram" },
-    ...rng(9, 10,  { author: "stup1d_mark",     label: "Telegram" }),
-    { src: "arts/11.jpg", author: null,         label: "Саша (тег недоступен)" },
-    ...rng(12, 22, { author: "buttercup_bunn18",label: "Telegram channel" }),
-    ...rng(23, 24, { author: "Lola4ka_kotik",   label: "Telegram channel" }),
-    { src: "arts/25.jpg", author: "Martini_3",  label: "Telegram" },
-    { src: "arts/26.jpg", author: null,         label: "Десси (тег утерян)" },
-    ...rng(27, 28, { author: "milisa_shi",      label: "Telegram channel" }),
-    ...rng(29, 70, { author: "Toshik_XP",       label: "Telegram channel" }),
-    { src: "arts/71.jpg", author: "Eviochko",   label: "Telegram" },
-    { src: "arts/72.jpg", author: "Toshik_XP",  label: "Telegram channel" },
-    ...rng(73, 77, { author: "Vannda_Panda",    label: "Telegram" }),
-    ...rng(78, 80, { author: "Toshik_XP",       label: "Telegram channel" }),
-    { src: "arts/81.jpg", author: "gnilayapechen", label: "Telegram channel" },
-    ...rng(82, 83, { author: "LisyatnikYaso",   label: "Telegram channel" }),
-    { src: "arts/84.png", author: "kiksasl",    label: "Telegram channel" },
-    { src: "arts/85.jpg", author: "Toshik_XP",  label: "Telegram channel" },
-    { src: "arts/86.jpg", author: "no_onelovesm",label: "Telegram channel" },
-];
-
-const gallery  = document.getElementById('gallery');
-const countEl  = document.getElementById('galleryCount');
-const sortBtn  = document.getElementById('sort-button');
-const lightbox = document.getElementById('lightbox');
-const lbImg    = lightbox.querySelector('.lightbox__img');
-const lbClose  = lightbox.querySelector('.lightbox__close');
-
-function renderGallery(list) {
-    countEl.textContent = `${list.length} работ`;
-    gallery.innerHTML = list.map((a, i) => {
-        const tag = a.author
-            ? `<a href="https://t.me/${encodeURIComponent(a.author)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(a.author)}</a>`
-            : `<span style="color:var(--text-faint); font-size: 11px;">${escapeHtml(a.label)}</span>`;
-        return `
-            <article class="art" style="animation-delay:${Math.min(i * 12, 400)}ms">
-                <button class="art__media" type="button" data-src="${escapeHtml(a.src)}" aria-label="Открыть арт от ${escapeHtml(a.author ?? a.label)}">
-                    <img src="${escapeHtml(a.src)}" alt="Арт от ${escapeHtml(a.author ?? a.label)}" loading="lazy" decoding="async">
-                </button>
-                <div class="art__info">
-                    <span class="art__info-label">${escapeHtml(a.label)}</span>
-                    ${tag}
-                </div>
-            </article>`;
-    }).join('');
-}
-
-let ascending = true;
-const num = s => parseInt(s.match(/(\d+)/)?.[1] ?? 0, 10);
-
-sortBtn.addEventListener('click', () => {
-    ascending = !ascending;
-    sortBtn.textContent = ascending ? 'Старые ⇑' : 'Новые ⇓';
-    renderGallery([...ARTS].sort((a, b) => ascending ? num(a.src) - num(b.src) : num(b.src) - num(a.src)));
-});
-
-function openLightbox(src) {
-    lbImg.src = src;
-    lightbox.dataset.open = 'true';
-    document.body.style.overflow = 'hidden';
-}
-function closeLightbox() {
-    lightbox.dataset.open = 'false';
-    lbImg.src = '';
-    document.body.style.overflow = '';
-}
-
-gallery.addEventListener('click', e => {
-    const btn = e.target.closest('.art__media');
-    if (btn) openLightbox(btn.dataset.src);
-});
-lbClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && lightbox.dataset.open === 'true') closeLightbox();
-});
-
-renderGallery(ARTS);
-
-(function initCopyDiscord() {
-    const btn   = document.getElementById('copy-discord');
-    const badge = document.getElementById('copy-badge');
-    if (!btn) return;
-
-    const tip = document.createElement('div');
-    tip.className = 'cursor-tip';
-    tip.textContent = 'копировать';
-    document.body.appendChild(tip);
-
-    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    if (supportsHover) {
-        btn.addEventListener('mouseenter', () => tip.classList.add('is-visible'));
-        btn.addEventListener('mouseleave', () => {
-            tip.classList.remove('is-visible');
-            tip.textContent = 'копировать';
-        });
-        btn.addEventListener('mousemove', e => {
-            tip.style.left = (e.clientX + 16) + 'px';
-            tip.style.top  = (e.clientY + 16) + 'px';
-        });
     }
 
-    btn.addEventListener('click', async e => {
-        e.preventDefault();
-        const text = btn.dataset.copy || '';
+    musicBtn.addEventListener('click', function () { setMusic(!musicEnabled); });
+
+    (async function initMusic() {
         try {
-            if (navigator.clipboard && window.isSecureContext) {
-                await navigator.clipboard.writeText(text);
-            } else {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                ta.remove();
+            playlist = await discoverMusic();
+            console.log('[music] final playlist length:', playlist.length);
+            if (!playlist.length) {
+                showMusicError('Файлы .mp3 в data/music/ не найдены — закинь mp3 в эту папку');
+                return;
             }
-            tip.textContent = 'скопировано!';
-            if (badge) badge.textContent = 'скопировано!';
-            setTimeout(() => {
-                tip.textContent = 'копировать';
-                if (badge) badge.textContent = 'копировать';
-            }, 1400);
-        } catch (err) {
-            tip.textContent = 'не вышло :(';
-            if (badge) badge.textContent = 'не вышло :(';
-            setTimeout(() => {
-                tip.textContent = 'копировать';
-                if (badge) badge.textContent = 'копировать';
-            }, 1400);
+            loadTrack(0);
+            var saved = null;
+            try { saved = localStorage.getItem('versel.music'); } catch (e) {}
+            if (saved === '1') {
+                await setMusic(true);
+                var tryResume = function () { if (!musicEnabled) setMusic(true); };
+                document.addEventListener('click', tryResume, { once: true });
+                document.addEventListener('keydown', tryResume, { once: true });
+                document.addEventListener('touchstart', tryResume, { once: true });
+            }
+        } catch (e) {
+            console.warn('[music] init failed:', e);
+            showMusicError('Ошибка загрузки музыки');
         }
+    })();
+
+    function getPath() {
+        var h = location.hash;
+        if (!h || h === '#' || h === '#/') return '/';
+        return h.slice(1).split('?')[0];
+    }
+
+    var routes = Array.prototype.slice.call(document.querySelectorAll('.route'));
+    var currentPath = null;
+    var routeAnimations = [];
+
+    function updateNav(path) {
+        document.querySelectorAll('.nav__link').forEach(function (link) {
+            if (link.dataset.route === path) link.setAttribute('aria-current', 'page');
+            else link.removeAttribute('aria-current');
+        });
+    }
+
+    function cancelRouteAnimations() {
+        routeAnimations.forEach(function (a) { try { a.cancel(); } catch (e) {} });
+        routeAnimations = [];
+    }
+
+    function animateChildrenIn(route) {
+        var easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
+        var children = Array.prototype.slice.call(route.children);
+        children.forEach(function (child, i) {
+            var anim = child.animate(
+                [
+                    { opacity: 0, transform: 'translateY(18px)', filter: 'blur(4px)' },
+                    { opacity: 1, transform: 'translateY(0)', filter: 'blur(0)' }
+                ],
+                { duration: 620, delay: i * 90, easing: easing, fill: 'both' }
+            );
+            routeAnimations.push(anim);
+        });
+    }
+
+    function animateRouteIn(route) {
+        route.hidden = false;
+        route.classList.remove('route--leaving');
+        route.classList.remove('route--entering');
+        animateChildrenIn(route);
+    }
+
+    function animateRouteOut(route, onDone) {
+        route.classList.remove('route--entering');
+        var easing = 'cubic-bezier(0.4, 0, 0.6, 1)';
+        var anim = route.animate(
+            [
+                { opacity: 1, transform: 'translateY(0)', filter: 'blur(0)' },
+                { opacity: 0, transform: 'translateY(-14px)', filter: 'blur(4px)' }
+            ],
+            { duration: 420, easing: easing, fill: 'forwards' }
+        );
+        routeAnimations.push(anim);
+        anim.onfinish = function () {
+            route.hidden = true;
+            try { anim.cancel(); } catch (e) {}
+            if (typeof onDone === 'function') onDone();
+        };
+    }
+
+    function navigate() {
+        var path = getPath();
+        if (path === currentPath) return;
+
+        var target = routes.find(function (r) { return r.dataset.route === path; }) || routes[0];
+        var current = routes.find(function (r) { return !r.hidden && r !== target; });
+
+        updateNav(path);
+        if (path === '/stats') initStats();
+        currentPath = path;
+
+        if (!current) {
+            animateRouteIn(target);
+            return;
+        }
+
+        cancelRouteAnimations();
+        animateRouteOut(current, function () {
+            animateRouteIn(target);
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        });
+    }
+
+    window.addEventListener('hashchange', navigate);
+    navigate();
+
+    var $name = document.getElementById('dpName');
+    var $user = document.getElementById('dpUsername');
+    var $avatar = document.getElementById('dpAvatar');
+    var $status = document.getElementById('dpStatus');
+    var $slot = document.getElementById('dpActivitySlot');
+
+    function escapeHtml(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+            return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m];
+        });
+    }
+
+    function renderActivity(opts) {
+        var iconHtml = opts.iconUrl
+            ? escapeHtml(opts.icon) + '<img src="' + escapeHtml(opts.iconUrl) + '" alt="" onerror="this.remove()">'
+            : escapeHtml(opts.icon);
+
+        var timeHtml = '';
+        if (opts.start) {
+            var mins = Math.max(0, Math.floor((Date.now() - opts.start) / 60000));
+            var hrs = Math.floor(mins / 60);
+            var timeStr = hrs > 0 ? hrs + ' ч ' + (mins % 60) + ' мин' : mins + ' мин';
+            timeHtml = '<div class="dp__activity-time">уже ' + timeStr + '</div>';
+        }
+
+        $slot.innerHTML =
+            '<div class="dp__activity">' +
+                '<div class="dp__activity-icon">' + iconHtml + '</div>' +
+                '<div class="dp__activity-info">' +
+                    '<div class="dp__activity-name">' + escapeHtml(opts.name) + '</div>' +
+                    (opts.details ? '<div class="dp__activity-detail">' + escapeHtml(opts.details) + '</div>' : '') +
+                    (opts.state ? '<div class="dp__activity-detail">' + escapeHtml(opts.state) + '</div>' : '') +
+                    timeHtml +
+                '</div>' +
+            '</div>';
+    }
+
+    async function loadPresence() {
+        if (!DISCORD_ID || DISCORD_ID.length < 5) return;
+        try {
+            var r = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_ID, { cache: 'no-store' });
+            var json = await r.json();
+            if (!json.success) throw new Error('not in Lanyard');
+            var d = json.data;
+
+            var user = d.discord_user || {};
+            var display = user.display_name || user.global_name || user.username || 'VerseL';
+            var discrimTag = user.discriminator && user.discriminator !== '0' ? '#' + user.discriminator : '';
+            var username = '@' + (user.username || 'verselthefox') + discrimTag;
+
+            var avatarUrl = user.avatar
+                ? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=160'
+                : 'https://cdn.discordapp.com/embed/avatars/0.png';
+
+            $name.textContent = display;
+            $user.textContent = username;
+            $avatar.src = avatarUrl;
+            $avatar.alt = display;
+            $status.dataset.status = d.discord_status || 'offline';
+
+            var acts = Array.isArray(d.activities) ? d.activities.filter(function (a) { return a.type !== 4; }) : [];
+
+            if (d.listening_to_spotify && d.spotify) {
+                var sp = d.spotify;
+                renderActivity({
+                    icon: '♪',
+                    iconUrl: sp.album_art_url || null,
+                    name: 'Spotify',
+                    details: sp.song,
+                    state: 'от ' + sp.artist,
+                    start: sp.timestamps && sp.timestamps.start
+                });
+            } else if (acts.length) {
+                var a = acts[0];
+                var iconMap = { 0: '🎮', 1: '📡', 2: '🎧', 3: '📺', 5: '🏆' };
+                var iconUrl = null;
+                if (a.assets && a.assets.large_image) {
+                    var li = a.assets.large_image;
+                    if (li.indexOf('mp:') === 0) iconUrl = 'https://media.discordapp.net/' + li.slice(3);
+                    else if (a.application_id) iconUrl = 'https://cdn.discordapp.com/app-assets/' + a.application_id + '/' + li + '.png';
+                }
+                renderActivity({
+                    icon: iconMap[a.type] || '▶',
+                    iconUrl: iconUrl,
+                    name: a.name || 'Unknown',
+                    details: a.details || '',
+                    state: a.state || '',
+                    start: a.timestamps && a.timestamps.start
+                });
+            } else {
+                $slot.innerHTML = '<div class="dp__empty">нет активности</div>';
+            }
+        } catch (err) {
+            $name.textContent = 'статус недоступен';
+            $status.dataset.status = 'offline';
+            $slot.innerHTML = '<div class="dp__empty">не удалось получить данные из Lanyard</div>';
+        }
+    }
+
+    loadPresence();
+    setInterval(loadPresence, 20000);
+
+    function rng(from, to, extra) {
+        return Array.from({ length: to - from + 1 }, function (_, i) {
+            var o = { src: 'arts/' + (from + i) + '.jpg' };
+            if (extra) for (var k in extra) o[k] = extra[k];
+            return o;
+        });
+    }
+
+    var ARTS = [].concat(
+        rng(1, 2,   { author: "gnilayapechen",   label: "Telegram channel" }),
+        rng(3, 5,   { author: "Wqzxcoi",         label: "Telegram" }),
+        rng(6, 7,   { author: "Cloud_kit1",      label: "Telegram channel" }),
+        [{ src: "arts/8.jpg",  author: "ERSHIKI_HINKALI", label: "Telegram" }],
+        rng(9, 10,  { author: "stup1d_mark",     label: "Telegram" }),
+        [{ src: "arts/11.jpg", author: null,     label: "Саша (тег недоступен)" }],
+        rng(12, 22, { author: "buttercup_bunn18",label: "Telegram channel" }),
+        rng(23, 24, { author: "Lola4ka_kotik",   label: "Telegram channel" }),
+        [{ src: "arts/25.jpg", author: "Martini_3", label: "Telegram" }],
+        [{ src: "arts/26.jpg", author: null,     label: "Десси (тег утерян)" }],
+        rng(27, 28, { author: "milisa_shi",      label: "Telegram channel" }),
+        rng(29, 70, { author: "Toshik_XP",       label: "Telegram channel" }),
+        [{ src: "arts/71.jpg", author: "Eviochko", label: "Telegram" }],
+        [{ src: "arts/72.jpg", author: "Toshik_XP", label: "Telegram channel" }],
+        rng(73, 77, { author: "Vannda_Panda",    label: "Telegram" }),
+        rng(78, 80, { author: "Toshik_XP",       label: "Telegram channel" }),
+        [{ src: "arts/81.jpg", author: "gnilayapechen", label: "Telegram channel" }],
+        rng(82, 83, { author: "LisyatnikYaso",   label: "Telegram channel" }),
+        [{ src: "arts/84.png", author: "kiksasl", label: "Telegram channel" }],
+        [{ src: "arts/85.jpg", author: "Toshik_XP", label: "Telegram channel" }],
+        [{ src: "arts/86.jpg", author: "no_onelovesm", label: "Telegram channel" }]
+    );
+
+    var gallery = document.getElementById('gallery');
+    var countEl = document.getElementById('galleryCount');
+    var sortBtn = document.getElementById('sort-button');
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = lightbox.querySelector('.lightbox__img');
+    var lbClose = lightbox.querySelector('.lightbox__close');
+
+    function renderGallery(list) {
+        countEl.textContent = list.length + ' работ';
+        gallery.innerHTML = list.map(function (a, i) {
+            var tag = a.author
+                ? '<a href="https://t.me/' + encodeURIComponent(a.author) + '" target="_blank" rel="noopener noreferrer">@' + escapeHtml(a.author) + '</a>'
+                : '<span style="color:var(--text-faint); font-size: 11px;">' + escapeHtml(a.label) + '</span>';
+            return '<article class="art" style="animation-delay:' + Math.min(i * 12, 400) + 'ms">' +
+                '<button class="art__media" type="button" data-src="' + escapeHtml(a.src) + '" aria-label="Открыть арт">' +
+                    '<img src="' + escapeHtml(a.src) + '" alt="Арт" loading="lazy" decoding="async">' +
+                '</button>' +
+                '<div class="art__info">' +
+                    '<span class="art__info-label">' + escapeHtml(a.label) + '</span>' +
+                    tag +
+                '</div>' +
+            '</article>';
+        }).join('');
+    }
+
+    var ascending = true;
+    function num(s) {
+        var m = String(s).match(/(\d+)/);
+        return m ? parseInt(m[1], 10) || 0 : 0;
+    }
+
+    sortBtn.addEventListener('click', function () {
+        ascending = !ascending;
+        sortBtn.textContent = ascending ? 'Старые ⇑' : 'Новые ⇓';
+        var sorted = ARTS.slice().sort(function (a, b) {
+            return ascending ? num(a.src) - num(b.src) : num(b.src) - num(a.src);
+        });
+        renderGallery(sorted);
     });
-})();
 
-let statsInitialized = false;
-function initStats() {
-    if (statsInitialized) return;
-    statsInitialized = true;
-
-    const $ = id => document.getElementById(id);
-
-    async function fetchStats() {
-        try {
-            const r = await fetch(PROXY_URL, { cache: 'no-store' });
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            const data = await r.json();
-            if (data.error) throw new Error(data.error);
-
-            $('onlineCount').textContent    = data.online;
-            $('tpsValue').innerHTML         = `${data.avgTps}<small>tick/s</small>`;
-            $('peakOnline').textContent     = data.peakPlayers;
-            $('whitelistCount').textContent = data.whitelistCount;
-            $('discordMembers').textContent = data.discordMembers;
-            $('uptimeDays').innerHTML       = `${data.daysRunning}<small>дн.</small>`;
-
-            const playersEl = $('playersList');
-            if (!data.onlinePlayers || data.onlinePlayers.length === 0) {
-                playersEl.innerHTML = '<div class="player-tag" style="opacity:0.7;">никто не играет :(</div>';
-            } else {
-                playersEl.innerHTML = data.onlinePlayers.map(nick => `
-                    <div class="player-tag">
-                        <img src="https://crafatar.com/avatars/${encodeURIComponent(nick)}?size=20&overlay" alt="" onerror="this.remove()">
-                        ${escapeHtml(nick)}
-                    </div>
-                `).join('');
-            }
-
-            $('lastUpdate').textContent = `✅ ${new Date().toLocaleTimeString()}`;
-            $('errorBox').hidden = true;
-        } catch (err) {
-            $('errorBox').hidden = false;
-            $('errorBox').innerHTML = `⚠️ ${escapeHtml(err.message)}<br>
-                Что-то сломалось. Возможные причины: упал Cloudflare Worker или источник данных (lemicraft.ru).`;
-            $('lastUpdate').textContent = '❌ ошибка';
-        }
+    function openLightbox(src) {
+        lbImg.setAttribute('src', abs(src));
+        lightbox.dataset.open = 'true';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        lightbox.dataset.open = 'false';
+        lbImg.removeAttribute('src');
+        document.body.style.overflow = '';
     }
 
-    $('manualRefreshBtn').addEventListener('click', fetchStats);
-    fetchStats();
-    setInterval(fetchStats, 30000);
-}
+    gallery.addEventListener('click', function (e) {
+        var btn = e.target.closest('.art__media');
+        if (btn) openLightbox(btn.dataset.src);
+    });
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox.dataset.open === 'true') closeLightbox();
+    });
+
+    renderGallery(ARTS);
+
+    (function initCopyDiscord() {
+        var btn = document.getElementById('copy-discord');
+        var badge = document.getElementById('copy-badge');
+        if (!btn) return;
+
+        var tip = document.createElement('div');
+        tip.className = 'cursor-tip';
+        tip.textContent = 'копировать';
+        document.body.appendChild(tip);
+
+        var supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        if (supportsHover) {
+            btn.addEventListener('mouseenter', function () { tip.classList.add('is-visible'); });
+            btn.addEventListener('mouseleave', function () {
+                tip.classList.remove('is-visible');
+                tip.textContent = 'копировать';
+            });
+            btn.addEventListener('mousemove', function (e) {
+                tip.style.left = (e.clientX + 16) + 'px';
+                tip.style.top = (e.clientY + 16) + 'px';
+            });
+        }
+
+        btn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            var text = btn.dataset.copy || '';
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    var ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                }
+                tip.textContent = 'скопировано!';
+                if (badge) badge.textContent = 'скопировано!';
+                setTimeout(function () {
+                    tip.textContent = 'копировать';
+                    if (badge) badge.textContent = 'копировать';
+                }, 1400);
+            } catch (err) {
+                tip.textContent = 'не вышло :(';
+                if (badge) badge.textContent = 'не вышло :(';
+                setTimeout(function () {
+                    tip.textContent = 'копировать';
+                    if (badge) badge.textContent = 'копировать';
+                }, 1400);
+            }
+        });
+    })();
+
+    var statsInitialized = false;
+    function initStats() {
+        if (statsInitialized) return;
+        statsInitialized = true;
+
+        function $(id) { return document.getElementById(id); }
+
+        async function fetchStats() {
+            try {
+                var r = await fetch(PROXY_URL, { cache: 'no-store' });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                var data = await r.json();
+                if (data.error) throw new Error(data.error);
+
+                $('onlineCount').textContent = data.online;
+                $('tpsValue').innerHTML = data.avgTps + '<small>tick/s</small>';
+                $('peakOnline').textContent = data.peakPlayers;
+                $('whitelistCount').textContent = data.whitelistCount;
+                $('discordMembers').textContent = data.discordMembers;
+                $('uptimeDays').innerHTML = data.daysRunning + '<small>дн.</small>';
+
+                var playersEl = $('playersList');
+                if (!data.onlinePlayers || data.onlinePlayers.length === 0) {
+                    playersEl.innerHTML = '<div class="player-tag" style="opacity:0.7;">никто не играет :(</div>';
+                } else {
+                    playersEl.innerHTML = data.onlinePlayers.map(function (nick) {
+                        return '<div class="player-tag">' +
+                            '<img src="https://crafatar.com/avatars/' + encodeURIComponent(nick) + '?size=20&overlay" alt="" onerror="this.remove()">' +
+                            escapeHtml(nick) +
+                        '</div>';
+                    }).join('');
+                }
+
+                $('lastUpdate').textContent = '✅ ' + new Date().toLocaleTimeString();
+                $('errorBox').hidden = true;
+            } catch (err) {
+                $('errorBox').hidden = false;
+                $('errorBox').innerHTML = '⚠️ ' + escapeHtml(err.message) + '<br>Что-то сломалось. Возможные причины: упал Cloudflare Worker или источник данных (lemicraft.ru).';
+                $('lastUpdate').textContent = '❌ ошибка';
+            }
+        }
+
+        $('manualRefreshBtn').addEventListener('click', fetchStats);
+        fetchStats();
+        setInterval(fetchStats, 30000);
+    }
+})();
 </script>
 
 </body>
